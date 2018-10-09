@@ -1,7 +1,7 @@
 class UI {
     constructor() {
         this.posts = document.querySelector('#posts');
-        this.title = document.querySelector('#title');
+        this.titleInput = document.querySelector('#title');
         this.bodyInput = document.querySelector('#body');
         this.idInput = document.querySelector('#id');
         this.postSubmit = document.querySelector('.post-submit');
@@ -30,6 +30,25 @@ class UI {
         }
 
         this.posts.innerHTML = output;
+    }
+
+    flashMessage(message, type) {
+        const div = document.createElement('div');
+        div.className = 'alert alert-' + type;
+        div.textContent = message;
+
+        this.posts.before(div);
+
+        setTimeout(() => {
+            div.remove();
+        }, 3000);
+    }
+
+    clearInputs() {
+        this.titleInput.value = '';
+        this.bodyInput.value = '';
+
+        this.titleInput.focus();
     }
 }
 
