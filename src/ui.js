@@ -4,7 +4,7 @@ class UI {
         this.titleInput = document.querySelector('#title');
         this.bodyInput = document.querySelector('#body');
         this.idInput = document.querySelector('#id');
-        this.postSubmit = document.querySelector('.post-submit');
+        this.postSubmitBtn = document.querySelector('.post-submit');
         this.formState = document.querySelector('add');
     }
 
@@ -36,6 +36,11 @@ class UI {
         const div = document.createElement('div');
         div.className = 'alert alert-' + type;
         div.textContent = message;
+        
+        // Remove previous alerts
+        if (this.posts.previousElementSibling.classList.contains('alert')) {
+            this.posts.previousElementSibling.remove();
+        }
 
         this.posts.before(div);
 
@@ -47,8 +52,42 @@ class UI {
     clearInputs() {
         this.titleInput.value = '';
         this.bodyInput.value = '';
+        this.idInput.value = '';
 
         this.titleInput.focus();
+    }
+
+    fillForm(item) {
+        this.titleInput.value = item.title;
+        this.bodyInput.value = item.body;
+        this.idInput.value = item.id;
+
+        this.changeFormState('edit');
+    }
+
+    changeFormState(type) {
+        if (type == 'edit') {
+            this.postSubmitBtn.textContent = 'Update post';
+            this.postSubmitBtn.classList.remove('btn-primary');
+            this.postSubmitBtn.classList.add('btn-warning');
+
+            const cancelButton = document.createElement('button');
+            cancelButton.className = 'post-cancel btn btn-light btn-block';
+            cancelButton.textContent = 'Cancel edit';
+
+            this.postSubmitBtn.after(cancelButton);
+
+            this.titleInput.focus();
+        } else if (type == 'add') {
+            this.postSubmitBtn.textContent = 'Post it';
+            this.postSubmitBtn.classList.remove('btn-warning');
+            this.postSubmitBtn.classList.add('btn-primary');
+
+            // Remove cancel button
+            document.querySelector('.post-cancel').remove();
+
+            this.clearInputs()
+        }
     }
 }
 
